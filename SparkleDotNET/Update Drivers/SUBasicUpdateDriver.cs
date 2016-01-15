@@ -141,8 +141,8 @@ namespace SparkleDotNET {
         protected void DownloadUpdate() {
 
             if (download == null) {
-                
-                // Get the filename from the URL in the background, 
+
+                // Get the filename from the URL in the background,
                 // since we hit the http server and it could take a while
 
                 BackgroundWorker filenameWorker = new BackgroundWorker();
@@ -232,7 +232,7 @@ namespace SparkleDotNET {
                 if (!e.Cancelled) {
                     AbortUpdateWithError(e.Error);
                 }
-               
+
             } else {
                 VerifySignature();
             }
@@ -248,8 +248,8 @@ namespace SparkleDotNET {
 
             Dictionary<string, object> verifyArguments = new Dictionary<string, object>();
             verifyArguments.SetValueForKey(downloadPath, "SUDownloadPath");
-            verifyArguments.SetValueForKey(Host.PublicDSAKey, "SUPublicDSAKey");
-            verifyArguments.SetValueForKey(updateItem.DSASignature, "SUUpdateSignature");
+            verifyArguments.SetValueForKey(Host.PublicRSAKey, "SUPublicRSAKey");
+            verifyArguments.SetValueForKey(updateItem.RSASignature, "SUUpdateSignature");
 
             verifySignatureWorker.RunWorkerAsync(verifyArguments);
         }
@@ -259,10 +259,10 @@ namespace SparkleDotNET {
             // This will be called on a background thread.
 
             try {
-                e.Result = SUDSAVerifier.ValidatePathWithEncodedDSASignatureAndPublicDSAKey(
+                e.Result = SURSAVerifier.ValidatePathWithEncodedRSASignatureAndPublicRSAKey(
                     (string)e.Argument.ValueForKey("SUDownloadPath"),
                     (string)e.Argument.ValueForKey("SUUpdateSignature"),
-                    (string)e.Argument.ValueForKey("SUPublicDSAKey")
+                    (string)e.Argument.ValueForKey("SUPublicRSAKey")
                 );
             } catch {
                 e.Result = false;

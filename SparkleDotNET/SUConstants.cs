@@ -11,6 +11,8 @@ namespace SparkleDotNET {
         public const string SULastProfileSubmitDateKey = "SULastProfileSubmitDate";
         public const string SUPublicDSAKeyKey = "SUPublicDSAKey";
         public const string SUPublicDSAKeyFileKey = "SUPublicDSAKeyFile";
+        public const string SUPublicRSAKeyKey = "SUPublicRSAKey";
+        public const string SUPublicRSAKeyFileKey = "SUPublicRSAKeyFile";
         public const string SUNoUpdateError = "com.Sparkle.NoUpdate";
         public const string SUNoFeedURLError = "com.Sparkle.NoFeedURL";
         public const string SUSignatureError = "com.Sparkle.SignatureError";
@@ -32,7 +34,7 @@ namespace SparkleDotNET {
         public const string SUProfileItemDisplayKeyKey = "SUProfileItemDisplayKey";
         public const string SUProfileItemValueKey = "SUProfileItemValue";
         public const string SUProfileItemDisplayValueKey = "SUProfileItemDisplayValue";
-        
+
 
         public const double SU_DEFAULT_CHECK_INTERVAL = 60 * 60 * 24; // A day
         public const double SU_MIN_CHECK_INTERVAL = 60 * 60; // An hour

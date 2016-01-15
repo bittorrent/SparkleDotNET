@@ -128,7 +128,6 @@ namespace SparkleDotNET {
             }
         }
 
-
         public string PublicDSAKey {
             get {
                 string key = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicDSAKeyKey);
@@ -137,6 +136,25 @@ namespace SparkleDotNET {
                 }
 
                 string keyFile = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicDSAKeyFileKey);
+                if (!Helpers.StringIsNullOrWhiteSpace(keyFile)) {
+                    string keyFilePath = (string)bundle.PathForResourceOfType(keyFile, null);
+                    if (!Helpers.StringIsNullOrWhiteSpace(keyFilePath) && File.Exists(keyFilePath)) {
+                        return File.ReadAllText(keyFilePath, Encoding.UTF8);
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        public string PublicRSAKey {
+            get {
+                string key = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicRSAKeyKey);
+                if (!Helpers.StringIsNullOrWhiteSpace(key)) {
+                    return key;
+                }
+
+                string keyFile = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicRSAKeyFileKey);
                 if (!Helpers.StringIsNullOrWhiteSpace(keyFile)) {
                     string keyFilePath = (string)bundle.PathForResourceOfType(keyFile, null);
                     if (!Helpers.StringIsNullOrWhiteSpace(keyFilePath) && File.Exists(keyFilePath)) {
@@ -161,6 +179,6 @@ namespace SparkleDotNET {
                 defaults.SetObjectForKey(value, key);
             }
         }
-      
+
     }
 }
