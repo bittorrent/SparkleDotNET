@@ -50,18 +50,6 @@ namespace SparkleDotNET {
             }
         }
 
-        public BitmapSource Icon {
-            get {
-                return bundle.BundleIcon;
-            }
-        }
-
-        public BitmapSource LargeIcon {
-            get {
-                return bundle.LargeBundleIcon;
-            }
-        }
-
         public string FeedURL {
             get {
 

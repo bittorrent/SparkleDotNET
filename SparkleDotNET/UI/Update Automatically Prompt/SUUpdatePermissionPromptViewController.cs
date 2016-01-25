@@ -17,7 +17,6 @@ namespace SparkleDotNET {
                 Host = host;
                 UpdateHeaderDescription.Text = String.Format(SULocalizedStrings.StringForKey("Update Automatically Prompt Header"),
                     Host.Name, SULocalizedStrings.StringForKey("Help"));
-                IconView.Source = host.LargeIcon;
                 ExtendedInfoContainer.Expanded += ExpandWindow;
                 ExtendedInfoContainer.Collapsed += CollapseWindow;
                 ExtendedInfoContainer.IsExpanded = false;
