@@ -9,8 +9,8 @@ namespace SparkleDotNET {
 
         public const string SULastCheckTimeKey = "SULastCheckTime";
         public const string SULastProfileSubmitDateKey = "SULastProfileSubmitDate";
-        public const string SUPublicDSAKeyKey = "SUPublicDSAKey";
-        public const string SUPublicDSAKeyFileKey = "SUPublicDSAKeyFile";
+        public const string SUPublicRSAKeyKey = "SUPublicRSAKey";
+        public const string SUPublicRSAKeyFileKey = "SUPublicRSAKeyFile";
         public const string SUNoUpdateError = "com.Sparkle.NoUpdate";
         public const string SUNoFeedURLError = "com.Sparkle.NoFeedURL";
         public const string SUSignatureError = "com.Sparkle.SignatureError";

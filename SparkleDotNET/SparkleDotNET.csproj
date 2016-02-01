@@ -110,7 +110,7 @@
     <Compile Include="SharpZLib\Zip\ZipOutputStream.cs" />
     <Compile Include="SUConstants.cs" />
     <Compile Include="SUAppcast.cs" />
-    <Compile Include="SUDSAVerifier.cs" />
+    <Compile Include="SURSAPKCS1Verifier.cs" />
     <Compile Include="SUHost.cs" />
     <Compile Include="Installation\SUInstaller.cs" />
     <Compile Include="SUSystemProfiler.cs" />
