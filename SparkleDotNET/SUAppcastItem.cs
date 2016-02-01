@@ -38,7 +38,7 @@ namespace SparkleDotNET {
                 Date = (DateTime)dict.ValueForKey("pubDate");
                 ItemDescription = (string)dict.ValueForKey("description");
                 FileURL = new Uri((string)enclosure.ValueForKey("url"));
-                DSASignature = (string)enclosure.ValueForKey("sparkle:dsaSignature");
+                RSAPKCS1Signature = (string)enclosure.ValueForKey("sparkle:rsaPKCS1Signature");
                 VersionString = newVersion;
                 MinimumSystemVersion = (string)enclosure.ValueForKey("sparkle:minimumSystemVersion");
 
@@ -72,7 +72,7 @@ namespace SparkleDotNET {
         private string itemDescription;
         private Uri releaseNotesURL;
         private Uri fileURL;
-        private string dsaSignature;
+        private string rsaPKCS1Signature;
         private string minimumSystemVersion;
         private string executableType;
         private string primaryInstallationFile;
@@ -104,12 +104,12 @@ namespace SparkleDotNET {
             }
         }
 
-        public string DSASignature {
-            get { return dsaSignature; }
+        public string RSAPKCS1Signature {
+            get { return rsaPKCS1Signature; }
             private set {
-                this.WillChangeValueForKey("DSASignature");
-                dsaSignature = value;
-                this.DidChangeValueForKey("DSASignature");
+                this.WillChangeValueForKey("RSAPKCS1Signature");
+                rsaPKCS1Signature = value;
+                this.DidChangeValueForKey("RSAPKCS1Signature");
             }
         }
 
