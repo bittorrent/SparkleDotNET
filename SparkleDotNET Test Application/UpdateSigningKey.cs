@@ -21,7 +21,7 @@ namespace SparkleDotNET_Test_Application {
 
         public UpdateSigningKey() {
 
-            DSACryptoServiceProvider provider = new DSACryptoServiceProvider();
+            RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
             PrivateKey = provider.ExportCspBlob(true);
             PublicKey = provider.ExportCspBlob(false);
 

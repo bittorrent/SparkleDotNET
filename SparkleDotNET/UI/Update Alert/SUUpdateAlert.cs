@@ -72,7 +72,6 @@ namespace SparkleDotNET {
 
             Window.TaskbarItemInfo = new System.Windows.Shell.TaskbarItemInfo();
             Window.Closing += WindowShouldClose;
-            Window.Icon = host.Icon;
             Window.Topmost = true;
 
             status = WindowStatus.WaitingForInitialAction;

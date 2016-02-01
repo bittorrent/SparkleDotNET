@@ -60,7 +60,6 @@ namespace SparkleDotNET {
                         UpdateHeaderDescription.Text = String.Format(SULocalizedStrings.StringForKey("Update Available Detail"),
                             Host.Name, Item.DisplayVersionString, Host.DisplayVersion);
                     }
-                    IconView.Source = Host.LargeIcon;
                 }
             }
         }

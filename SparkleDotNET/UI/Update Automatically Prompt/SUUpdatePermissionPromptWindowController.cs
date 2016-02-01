@@ -19,7 +19,6 @@ namespace SparkleDotNET {
         public SUUpdatePermissionPromptWindowController(SUHost host)
             : base(new SUUpdatePermissionPromptWindow()) {
 
-                Window.Icon = host.Icon;
                 Window.Topmost = true;
 
                 viewController = new SUUpdatePermissionPromptViewController(host);

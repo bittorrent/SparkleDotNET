@@ -165,7 +165,7 @@ namespace SparkleDotNET_Test_Application {
 
         private void SignFileButton_Click(object sender, RoutedEventArgs e) {
 
-            DSACryptoServiceProvider provider = new DSACryptoServiceProvider();
+            RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
             provider.ImportCspBlob(SelectedKey.PrivateKey);
 
             OpenFileDialog dialog = new OpenFileDialog();
@@ -179,11 +179,11 @@ namespace SparkleDotNET_Test_Application {
 
                 try {
 
-                    DSASignatureFormatter formatter = new DSASignatureFormatter(provider);
-                    formatter.SetHashAlgorithm("SHA1");
+                    RSAPKCS1SignatureFormatter formatter = new RSAPKCS1SignatureFormatter(provider);
+                    formatter.SetHashAlgorithm("SHA256");
 
-                    SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
-                    byte[] hash = sha1.ComputeHash(File.ReadAllBytes(dialog.FileName));
+                    SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
+                    byte[] hash = sha256.ComputeHash(File.ReadAllBytes(dialog.FileName));
                     
                     string signature = Convert.ToBase64String(formatter.CreateSignature(hash));
 

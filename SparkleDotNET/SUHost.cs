@@ -50,18 +50,6 @@ namespace SparkleDotNET {
             }
         }
 
-        public BitmapSource Icon {
-            get {
-                return bundle.BundleIcon;
-            }
-        }
-
-        public BitmapSource LargeIcon {
-            get {
-                return bundle.LargeBundleIcon;
-            }
-        }
-
         public string FeedURL {
             get {
 
@@ -129,14 +117,14 @@ namespace SparkleDotNET {
         }
 
 
-        public string PublicDSAKey {
+        public string PublicRSAKey {
             get {
-                string key = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicDSAKeyKey);
+                string key = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicRSAKeyKey);
                 if (!Helpers.StringIsNullOrWhiteSpace(key)) {
                     return key;
                 }
 
-                string keyFile = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicDSAKeyFileKey);
+                string keyFile = (string)bundle.InfoDictionary.ValueForKey(SUConstants.SUPublicRSAKeyFileKey);
                 if (!Helpers.StringIsNullOrWhiteSpace(keyFile)) {
                     string keyFilePath = (string)bundle.PathForResourceOfType(keyFile, null);
                     if (!Helpers.StringIsNullOrWhiteSpace(keyFilePath) && File.Exists(keyFilePath)) {
