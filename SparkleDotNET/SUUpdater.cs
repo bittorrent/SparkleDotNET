@@ -110,18 +110,18 @@ namespace SparkleDotNET {
 
         // ------------------
 
-        public void CheckForUpdates() {
-            CheckForUpdatesWithDriver(new SUUserInitiatedUpdateDriver(this));
-        }
+        //public void CheckForUpdates() {
+        //    CheckForUpdatesWithDriver(new SUUserInitiatedUpdateDriver(this));
+        //}
 
         public void CheckForUpdatesInBackground() {
             CheckForUpdatesWithDriver(new SUScheduledUpdateDriver(this));
             // Todo: Implement auto-downloading and SUAutomaticUpdaterDriver
         }
 
-        public void CheckForUpdateInformation() {
-            CheckForUpdatesWithDriver(new SUProbingUpdateDriver(this));
-        }
+        //public void CheckForUpdateInformation() {
+        //    CheckForUpdatesWithDriver(new SUProbingUpdateDriver(this));
+        //}
 
         public bool UpdateInProgress() {
             if (driver == null) {
@@ -250,6 +250,8 @@ namespace SparkleDotNET {
                 object val = host.ObjectForUserDefaultsKey(SUConstants.SUHasLaunchedBeforeKey);
                 if (val == null || (bool)val == false) {
                     host.SetObjectForUserDefaultsKey(true, SUConstants.SUHasLaunchedBeforeKey);
+                    //on 1st launch, assume no need to update; shouldPrompt will be true on relaunch
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.SU1stLaunchNotification, this);
                 } else {
                     shouldPrompt = true;
                 }
@@ -294,7 +296,6 @@ namespace SparkleDotNET {
             if (updateCheckInterval < SUConstants.SU_MIN_CHECK_INTERVAL) {
                 updateCheckInterval = SUConstants.SU_MIN_CHECK_INTERVAL;
             }
-
             if (timeSinceLastUpdate < updateCheckInterval) {
                 delayUntilCheck = updateCheckInterval - timeSinceLastUpdate;
             }
@@ -302,10 +303,15 @@ namespace SparkleDotNET {
             if (delayUntilCheck <= 0) {
                 CheckForUpdatesInBackground();
             } else {
+                if (!UpdateInProgress())
+                {
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.SURecentlyCheckedNotification, this);
+                }
+                //autoupdater will shutdown program, not live to check next day, so no need for checkTimer
 
-                checkTimer = new DispatcherTimer(TimeSpan.FromSeconds(delayUntilCheck), DispatcherPriority.Normal, CheckTimerDidFire, Dispatcher.CurrentDispatcher);
-                checkTimer.IsEnabled = true;
-                checkTimer.Start();
+                //checkTimer = new DispatcherTimer(TimeSpan.FromSeconds(delayUntilCheck), DispatcherPriority.Normal, CheckTimerDidFire, Dispatcher.CurrentDispatcher);
+                //checkTimer.IsEnabled = true;
+                //checkTimer.Start();
             }
         }
 

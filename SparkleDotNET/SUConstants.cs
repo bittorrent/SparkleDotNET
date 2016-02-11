@@ -21,6 +21,10 @@ namespace SparkleDotNET {
         public const string SUExtractionFailedError = "com.Sparkle.ExtractionFailedError";
         public const string SUSkippedVersionKey = "SUSkippedVersion";
         public const string SUUpdateDriverFinishedNotification = "SUUpdateDriverFinished";
+        public const string SURecentlyCheckedNotification = "SURecentlyCheckedNotification";
+        public const string SUTerminateNotification = "SUTerminateNotification";
+        public const string SU1stLaunchNotification = "SU1stLaunchNotification";
+
         public const string SUFeedURLKey = "SUFeedURL";
         public const string SUEnableAutomaticChecksKey = "SUEnableAutomaticChecks";
         public const string SUScheduledCheckIntervalKey = "SUScheduledCheckInterval";
