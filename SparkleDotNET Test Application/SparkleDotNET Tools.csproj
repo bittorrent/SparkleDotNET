@@ -39,9 +39,6 @@
     <ApplicationIcon>Music_Rescue_4.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KNControls">
-      <HintPath>..\..\KNControls\KNControls\bin\Release\KNControls.dll</HintPath>
-    </Reference>
     <Reference Include="KNFoundation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\KNFoundation\KNFoundation\bin\Release\KNFoundation.dll</HintPath>
@@ -125,6 +122,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\KNControlsWinForms\KNControls\KNControls.vbproj">
+      <Project>{a3c90624-59fc-4d3b-bc58-49f46f1e8417}</Project>
+      <Name>KNControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SparkleDotNET\SparkleDotNET.csproj">
       <Project>{5352219A-A076-449A-8319-6C29E4C21153}</Project>
       <Name>SparkleDotNET</Name>
