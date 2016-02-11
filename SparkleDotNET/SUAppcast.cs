@@ -59,95 +59,114 @@ namespace SparkleDotNET {
             WebClient client = new WebClient();
             client.Headers.Add(HttpRequestHeader.UserAgent, UserAgentString);
             client.Encoding = UTF8Encoding.UTF8;
-            client.DownloadStringCompleted += AppcastWasDownloaded;
-            client.DownloadStringAsync(url);
 
+            //for autoupdater, avoid DownloadStringAsync as it'll call AppcastWasDownloaded
+            //from a worker thread which conflicts w/ spawning any dialog;
+            //so we DownloadString to stay on main thread
+            try
+            {
+                string appcast = client.DownloadString(url);
+                HandleAppcast(appcast);
+            }
+            catch(Exception e)
+            {
+                ReportError(e);
+            }
         }
 
-        private void AppcastWasDownloaded(Object sender, DownloadStringCompletedEventArgs e) {
+        private void HandleAppcast(string appcast)
+        {
+            XmlNodeList xmlItems = null;
 
-            if (e.Error != null) {
-                ReportError(e.Error);
-            } else {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(appcast);
+                xmlItems = doc.SelectNodes("/rss/channel/item");
+            }
+            catch (Exception ex)
+            {
+                ReportError(ex);
+                return;
+            }
+            List<SUAppcastItem> appcastItems = new List<SUAppcastItem>();
 
-                XmlNodeList xmlItems = null;
+            foreach (XmlNode node in xmlItems)
+            {
+                Dictionary<string, ArrayList> nodesDict = new Dictionary<string, ArrayList>();
+                Dictionary<string, Object> itemDescription = new Dictionary<string, object>();
 
-                try {
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(e.Result);
-                    xmlItems = doc.SelectNodes("/rss/channel/item");
-                } catch (Exception ex) {
-                    ReportError(ex);
-                    return;
+                // Create a dictionary of nodes for each name present,
+                // so we can parse by xml:lang later.
+
+                foreach (XmlNode childNode in node.ChildNodes)
+                {
+
+                    string nodeName = childNode.Name;
+                    ArrayList nodesForName = null;
+                    if (!nodesDict.TryGetValue(nodeName, out nodesForName))
+                    {
+                        nodesForName = new ArrayList();
+                        nodesDict.Add(nodeName, nodesForName);
+                    }
+                    nodesForName.Add(childNode);
                 }
 
-                List<SUAppcastItem> appcastItems = new List<SUAppcastItem>();
+                foreach (string itemKey in nodesDict.Keys)
+                {
+                    ArrayList nodes = null;
+                    nodesDict.TryGetValue(itemKey, out nodes);
 
-                foreach (XmlNode node in xmlItems) {
+                    XmlNode bestNodeForKey = BestNodeInNodes(nodes);
 
-                    Dictionary<string, ArrayList> nodesDict = new Dictionary<string, ArrayList>();
-                    Dictionary<string, Object> itemDescription = new Dictionary<string, object>();
+                    if (bestNodeForKey.Name.Equals("enclosure"))
+                    {
+                        // enclosure is flattened as a separate dictionary for some reason
+                        Dictionary<string, string> enclosureDict = new Dictionary<string, string>();
 
-                    // Create a dictionary of nodes for each name present,
-                    // so we can parse by xml:lang later.
-
-                    foreach (XmlNode childNode in node.ChildNodes) {
-
-                        string nodeName = childNode.Name;
-                        ArrayList nodesForName = null;
-                        if (!nodesDict.TryGetValue(nodeName, out nodesForName)) {
-                            nodesForName = new ArrayList();
-                            nodesDict.Add(nodeName, nodesForName);
+                        foreach (XmlAttribute attribute in bestNodeForKey.Attributes)
+                        {
+                            enclosureDict.SetValueForKey(attribute.InnerText, attribute.Name);
                         }
-                        nodesForName.Add(childNode);
+                        itemDescription.SetValueForKey(enclosureDict, "enclosure");
+
                     }
-
-
-                    foreach (string itemKey in nodesDict.Keys) {
-
-                        ArrayList nodes = null;
-                        nodesDict.TryGetValue(itemKey, out nodes);
-
-                        XmlNode bestNodeForKey = BestNodeInNodes(nodes);
-
-                        if (bestNodeForKey.Name.Equals("enclosure")) {
-                            // enclosure is flattened as a separate dictionary for some reason
-                            Dictionary<string, string> enclosureDict = new Dictionary<string, string>();
-
-                            foreach (XmlAttribute attribute in bestNodeForKey.Attributes) {
-                                enclosureDict.SetValueForKey(attribute.InnerText, attribute.Name);
-                            }
-                            itemDescription.SetValueForKey(enclosureDict, "enclosure");
-
-                        } else if (bestNodeForKey.Name.Equals("pubDate")) {
-                            try {
-                                DateTime date = DateTime.Parse(bestNodeForKey.InnerText);
-                                itemDescription.SetValueForKey(date, bestNodeForKey.Name);
-                            } catch {
-                                // Nothing
-                            }
-                        } else {
-                            itemDescription.SetValueForKey(bestNodeForKey.InnerText.Trim(), bestNodeForKey.Name);
-
+                    else if (bestNodeForKey.Name.Equals("pubDate"))
+                    {
+                        try
+                        {
+                            DateTime date = DateTime.Parse(bestNodeForKey.InnerText);
+                            itemDescription.SetValueForKey(date, bestNodeForKey.Name);
+                        }
+                        catch
+                        {
+                            // Nothing
                         }
                     }
+                    else
+                    {
+                        itemDescription.SetValueForKey(bestNodeForKey.InnerText.Trim(), bestNodeForKey.Name);
 
-                    try {
-                        SUAppcastItem item = new SUAppcastItem(itemDescription);
-                        appcastItems.Add(item);
-
-                    } catch {
                     }
                 }
 
-                appcastItems.Sort();
-                appcastItems.Reverse(); // new to old
-
-                Items = appcastItems;
-
-                if (Delegate != null) {
-                    Delegate.AppcastDidFinishLoading(this);
+                try
+                {
+                    SUAppcastItem item = new SUAppcastItem(itemDescription);
+                    appcastItems.Add(item);
                 }
+                catch
+                {
+                }
+            }
+
+            appcastItems.Sort();
+            appcastItems.Reverse(); // new to old
+
+            Items = appcastItems;
+            if (Delegate != null)
+            {
+                Delegate.AppcastDidFinishLoading(this);
             }
         }
 

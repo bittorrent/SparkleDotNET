@@ -15,12 +15,15 @@ namespace SparkleDotNET {
 
         private SUUpdatePermissionPromptViewController viewController;
         bool sendDelegateOnWindowClose;
+        SUUpdatePermissionPromptWindow updatePermissionPromptWindow;
 
         public SUUpdatePermissionPromptWindowController(SUHost host)
             : base(new SUUpdatePermissionPromptWindow()) {
 
                 Window.Icon = host.Icon;
                 Window.Topmost = true;
+
+                updatePermissionPromptWindow = Window is SUUpdatePermissionPromptWindow ? (SUUpdatePermissionPromptWindow)Window : null;
 
                 viewController = new SUUpdatePermissionPromptViewController(host);
                 viewController.CheckAutomaticallyButton.Click += CheckAutomatically;
@@ -44,7 +47,11 @@ namespace SparkleDotNET {
             if (Delegate != null) {
                 Delegate.PermissionPromptDidComplete(true, ShouldSendSystemInfo);
             }
-
+            if (updatePermissionPromptWindow != null)
+            {
+                //don't quit autoupdater; updatePermissionPromptWindow no longer needs to handle quitting
+                updatePermissionPromptWindow.DontTerminateOnClosing = true;
+            }
             Window.Close();
         }
 
@@ -56,6 +63,7 @@ namespace SparkleDotNET {
             }
 
             Window.Close();
+            KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.SUTerminateNotification, this);
         }
 
         private bool ShouldSendSystemInfo {
