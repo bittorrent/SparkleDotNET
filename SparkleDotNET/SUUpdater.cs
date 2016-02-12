@@ -110,9 +110,10 @@ namespace SparkleDotNET {
 
         // ------------------
 
-        //public void CheckForUpdates() {
-        //    CheckForUpdatesWithDriver(new SUUserInitiatedUpdateDriver(this));
-        //}
+        public void CheckForUpdates()
+        {
+            CheckForUpdatesWithDriver(new SUUserInitiatedUpdateDriver(this));
+        }
 
         public void CheckForUpdatesInBackground() {
             CheckForUpdatesWithDriver(new SUScheduledUpdateDriver(this));
