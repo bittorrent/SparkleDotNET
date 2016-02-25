@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.ComponentModel;
+using KNFoundation;
 using KNFoundation.KNKVC;
 using SparkleDotNET;
 
@@ -107,6 +108,7 @@ namespace SparkleDotNET {
         }
 
         public void AppCastFailedToLoadWithError(SUAppcast anAppcast, Exception anError) {
+            KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.SUFeedLoadError, this);
             AbortUpdateWithError(anError);
         }
 
@@ -127,6 +129,7 @@ namespace SparkleDotNET {
         }
 
         protected virtual void AbortUpdateWithError(Exception error) {
+            KNNotificationCentre.SharedCentre().PostNotificationWithName(error.Message, this);
 
             CancelDownload(null);
             AbortUpdate();
@@ -231,6 +234,9 @@ namespace SparkleDotNET {
 
                 if (!e.Cancelled) {
                     AbortUpdateWithError(e.Error);
+                }
+                else {
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.DownloadCancelled, this);
                 }
                
             } else {
