@@ -137,6 +137,7 @@ namespace SparkleDotNET {
 
                 string url = host.FeedURL;
                 if (String.IsNullOrEmpty(url)) {
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.SUNoFeedURLError, this);
                     throw new Exception(SUConstants.SUNoFeedURLError);
                 }
                 return url;
