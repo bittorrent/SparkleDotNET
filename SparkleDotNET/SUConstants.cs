@@ -27,6 +27,7 @@ namespace SparkleDotNET {
         public const string SU1stLaunchNotification = "SU1stLaunchNotification";
 
         //for bench stats
+        public const string Updated = "Updated";
         public const string DownloadCancelled = "DownloadCancelled";
         public const string DownloadClicked = "DownloadClicked";
 

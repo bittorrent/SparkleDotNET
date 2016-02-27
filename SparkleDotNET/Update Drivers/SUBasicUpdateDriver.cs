@@ -357,19 +357,8 @@ namespace SparkleDotNET {
                 if (installer.BeginInstallationOfItemFromPath(updateItem, installationFilePath)) {
                     Host.SetObjectForUserDefaultsKey(extractedFilePath, SUConstants.SUExtractedFilesForCleanupKey);
                     RemoveDownloadedFiles();
-
-                    try {
-                        System.Windows.Application.Current.Shutdown(0);
-                    } catch (Exception) {
-                        try {
-                            Environment.Exit(0);
-                        } catch (Exception e) {
-                            // We really should never be here!
-                            AbortUpdateWithError(e);
-                        }
-                    }
-
-
+                    
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.Updated, this);
                 } else {
                     AbortUpdateWithError(new Exception(SUConstants.SUInstallerFailedToLaunchError));
                 }
