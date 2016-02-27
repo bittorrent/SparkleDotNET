@@ -174,6 +174,7 @@ namespace SparkleDotNET {
             set {
                 this.WillChangeValueForKey("AutomaticallyChecksForUpdates");
                 host.SetObjectForUserDefaultsKey(value, SUConstants.SUEnableAutomaticChecksKey);
+                host.SaveDefaults(); //ensure the update installer's autoupdater gets this
 
                 if (value && UpdateCheckInterval == 0) {
                     UpdateCheckInterval = SUConstants.SU_DEFAULT_CHECK_INTERVAL;
