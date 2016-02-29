@@ -20,6 +20,11 @@ namespace SparkleDotNET {
 
         }
 
+        public void SaveDefaults()
+        {
+            defaults.Synchronise();
+        }
+
         public string SystemVersionString {
             get { return Environment.OSVersion.Version.ToString(); }
         }

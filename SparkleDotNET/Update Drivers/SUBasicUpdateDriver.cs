@@ -236,7 +236,7 @@ namespace SparkleDotNET {
                     AbortUpdateWithError(e.Error);
                 }
                 else {
-                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.DownloadCancelled, this);
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.UpdateCancelled, this);
                 }
                
             } else {
@@ -357,19 +357,8 @@ namespace SparkleDotNET {
                 if (installer.BeginInstallationOfItemFromPath(updateItem, installationFilePath)) {
                     Host.SetObjectForUserDefaultsKey(extractedFilePath, SUConstants.SUExtractedFilesForCleanupKey);
                     RemoveDownloadedFiles();
-
-                    try {
-                        System.Windows.Application.Current.Shutdown(0);
-                    } catch (Exception) {
-                        try {
-                            Environment.Exit(0);
-                        } catch (Exception e) {
-                            // We really should never be here!
-                            AbortUpdateWithError(e);
-                        }
-                    }
-
-
+                    
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.UpdateFinished, this);
                 } else {
                     AbortUpdateWithError(new Exception(SUConstants.SUInstallerFailedToLaunchError));
                 }

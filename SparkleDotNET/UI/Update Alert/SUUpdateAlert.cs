@@ -208,7 +208,7 @@ namespace SparkleDotNET {
         }
 
         private void DownloadButtonClicked(object sender, EventArgs e) {
-            KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.DownloadClicked, this);
+            KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.UpdateClicked, this);
             MakeChoice(SUUpdateAlertChoice.SUInstallUpdateChoice);
         }
 
