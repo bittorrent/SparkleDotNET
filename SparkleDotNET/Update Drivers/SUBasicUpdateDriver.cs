@@ -236,7 +236,7 @@ namespace SparkleDotNET {
                     AbortUpdateWithError(e.Error);
                 }
                 else {
-                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.DownloadCancelled, this);
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.UpdateCancelled, this);
                 }
                
             } else {
@@ -358,7 +358,7 @@ namespace SparkleDotNET {
                     Host.SetObjectForUserDefaultsKey(extractedFilePath, SUConstants.SUExtractedFilesForCleanupKey);
                     RemoveDownloadedFiles();
                     
-                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.Updated, this);
+                    KNNotificationCentre.SharedCentre().PostNotificationWithName(SUConstants.UpdateFinished, this);
                 } else {
                     AbortUpdateWithError(new Exception(SUConstants.SUInstallerFailedToLaunchError));
                 }
